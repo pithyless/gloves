@@ -14,3 +14,9 @@ module RUI::GuiBuilder
     end
   end
 end
+
+class Qt::Image
+  def to_image
+    self
+  end
+end
