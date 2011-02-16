@@ -2,7 +2,8 @@ require_relative 'lib/toolkit'
 require_relative 'lib/monocles'
 
 RUI::Application.init('hello') do |app|
-  final = ScanMonocle.new('samples/01-a-100.png')
+  final = ScanMonocle.new('samples/01-a-100-2.png')
+  final = final.to_gray_monocle
 
   widget = Qt::Widget.new
   widget.gui = RUI::autogui do
