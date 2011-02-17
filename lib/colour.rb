@@ -1,4 +1,3 @@
-
 #
 # An abstract Colour RGBA class
 #
