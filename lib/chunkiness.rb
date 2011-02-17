@@ -36,10 +36,6 @@ module Chuckable
   end
 end
 
-class ScanMonocle
-  include Chuckable
-end
-
 Colour.class_eval do
   def self.from_chunky(col)
     (r,g,b,a) = ChunkyPNG::Color.to_truecolor_alpha_bytes(col)
@@ -64,4 +60,3 @@ GrayColour.class_eval do
     ChunkyPNG::Color.rgba(gray, gray, gray, alpha)
   end
 end
-

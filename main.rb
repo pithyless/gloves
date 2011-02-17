@@ -3,6 +3,7 @@ require_relative 'lib/monocles'
 
 RUI::Application.init('hello') do |app|
   final = ScanMonocle.new('samples/01-a-100-2.png')
+  final = final.to_color_monocle
   final = final.to_gray_monocle
 
   widget = Qt::Widget.new
