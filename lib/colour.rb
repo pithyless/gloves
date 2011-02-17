@@ -1,0 +1,36 @@
+
+#
+# An abstract Colour RGBA class
+#
+class Colour
+  attr_reader :red, :blue, :green, :alpha
+  #
+  # Expects values in range 0..255
+  #
+  def self.rgba(r, g, b, a)
+    c = Colour.new
+    c.red = r
+    c.green = g
+    c.blue = b
+    c.alpha = a
+    c
+  end
+
+  def red=(x);   @red = clasp(x);   end
+  def green=(x); @green = clasp(x); end
+  def blue=(x);  @blue = clasp(x);  end
+  def alpha=(x); @alpha = clasp(x); end
+  
+  def to_s
+    "<Colour: #{red}, #{blue}, #{green}, #{alpha}>"
+  end
+
+  private
+  
+  def clasp(value)
+    value = value.to_i
+    return 255 if value > 255
+    return 0 if value < 0
+    value
+  end
+end
