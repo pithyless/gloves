@@ -43,5 +43,28 @@ class TestGrayColour < MiniTest::Unit::TestCase
     assert_equal g.gray, 45
     assert_equal g.alpha, 205
   end
+
+  def test_gray_clasp
+    c = GrayColour.gray(299, 301)
+    assert_equal c.gray, 255
+    assert_equal c.alpha, 255
+    c = GrayColour.gray(-23, -25)
+    assert_equal c.gray, 0
+    assert_equal c.alpha, 0
+    c = GrayColour.gray(42, 92)
+    assert_equal c.gray, 42
+    assert_equal c.alpha, 92
+  end
+
+  def test_to_s
+    c = GrayColour.gray(124, 255)
+    s = "<GrayColour: 124, 255>"
+    assert_equal c.to_s, s
+  end
+
+  def test_private_clasp
+    c = GrayColour.gray(34, 255)
+    refute_respond_to c, :clasp
+  end
 end
 

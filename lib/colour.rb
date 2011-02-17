@@ -60,4 +60,8 @@ class GrayColour
     gray = (0.3*col.red + 0.59*col.green + 0.11*col.blue).to_i
     GrayColour.gray(gray, col.alpha)
   end
+
+  def to_s
+    "<GrayColour: #{gray}, #{alpha}>"
+  end
 end
