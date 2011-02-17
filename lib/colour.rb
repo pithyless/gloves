@@ -1,7 +1,20 @@
+module Claspable
+  private
+
+  def clasp(value)
+    value = value.to_i
+    return 255 if value > 255
+    return 0 if value < 0
+    value
+  end
+end
+
 #
 # An abstract Colour RGBA class
 #
 class Colour
+  include Claspable
+
   attr_reader :red, :blue, :green, :alpha
   #
   # Expects values in range 0..255
@@ -23,13 +36,23 @@ class Colour
   def to_s
     "<Colour: #{red}, #{blue}, #{green}, #{alpha}>"
   end
+end
 
-  private
+class GrayColour
+  include Claspable
+
+  attr_reader :gray, :alpha
+
+  def gray=(x);  @gray = clasp(x);   end
+  def alpha=(x); @alpha = clasp(x); end
   
-  def clasp(value)
-    value = value.to_i
-    return 255 if value > 255
-    return 0 if value < 0
-    value
+  def initialize(gray, alpha)
+    @gray = gray
+    @alpha = alpha
+  end
+
+  def self.from_colour(col)
+    gray = (0.3*col.red + 0.59*col.green + 0.11*col.blue).to_i
+    GrayColour.new(gray, col.alpha)
   end
 end

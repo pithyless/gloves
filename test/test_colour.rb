@@ -29,3 +29,13 @@ class TestColour < MiniTest::Unit::TestCase
     refute_respond_to c, :clasp
   end
 end
+
+class TestGrayColour < MiniTest::Unit::TestCase
+  def test_from_colour
+    c = Colour.rgba(45, 123, 170, 255)
+    g = GrayColour.from_colour(c)
+    assert_equal g.gray, 104
+    assert_equal g.alpha, 255
+  end
+end
+
