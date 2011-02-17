@@ -28,6 +28,16 @@ class TestColour < MiniTest::Unit::TestCase
     c = Colour.rgba(255,0,93,255)
     refute_respond_to c, :clasp
   end
+
+  def test_make_invisible
+    c = Colour.invisible
+    assert_equal c.red,   0
+    assert_equal c.green, 0
+    assert_equal c.blue,  0
+    assert_equal c.alpha, 0
+
+    assert_equal true, c.invisible?
+  end
 end
 
 class TestGrayColour < MiniTest::Unit::TestCase
@@ -65,6 +75,14 @@ class TestGrayColour < MiniTest::Unit::TestCase
   def test_private_clasp
     c = GrayColour.gray(34, 255)
     refute_respond_to c, :clasp
+  end
+
+  def test_make_invisible
+    c = GrayColour.invisible
+    assert_equal c.gray,  0
+    assert_equal c.alpha, 0
+
+    assert_equal true, c.invisible?
   end
 end
 

@@ -39,6 +39,14 @@ class Colour
   def to_s
     "<Colour: #{red}, #{blue}, #{green}, #{alpha}>"
   end
+
+  def self.invisible
+    Colour.rgba(0, 0, 0, 0)
+  end
+
+  def invisible?
+    red == 0 and green == 0 and blue == 0 and alpha == 0
+  end
 end
 
 class GrayColour
@@ -63,5 +71,13 @@ class GrayColour
 
   def to_s
     "<GrayColour: #{gray}, #{alpha}>"
+  end
+
+  def self.invisible
+    GrayColour.gray(0, 0)
+  end
+
+  def invisible?
+    gray == 0 and alpha == 0
   end
 end
