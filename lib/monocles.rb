@@ -1,4 +1,4 @@
-require_relative 'images'
+require_relative 'coloring'
 
 class ScanMonocle
   attr_reader :image
@@ -9,9 +9,7 @@ class ScanMonocle
   end
 
   def to_gray_monocle
-    to_gray_monocle_chunky
-    length = @image.width * @image.height
-    gray = Qt::Image.fromData(@image_datastream, length)
+    gray = using_chunky {|img| to_gray_monocle_chunky img }
     GrayMonocle.new(gray)
   end
 
