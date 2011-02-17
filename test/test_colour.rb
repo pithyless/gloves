@@ -37,5 +37,11 @@ class TestGrayColour < MiniTest::Unit::TestCase
     assert_equal g.gray, 104
     assert_equal g.alpha, 255
   end
+
+  def test_gray_colour
+    g = GrayColour.gray(45, 205)
+    assert_equal g.gray, 45
+    assert_equal g.alpha, 205
+  end
 end
 

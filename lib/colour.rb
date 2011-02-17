@@ -9,6 +9,9 @@ module Claspable
   end
 end
 
+
+class ColourMismatch < StandardError; end
+
 #
 # An abstract Colour RGBA class
 #
@@ -43,16 +46,18 @@ class GrayColour
 
   attr_reader :gray, :alpha
 
-  def gray=(x);  @gray = clasp(x);   end
+  def gray=(x);  @gray = clasp(x);  end
   def alpha=(x); @alpha = clasp(x); end
   
-  def initialize(gray, alpha)
-    @gray = gray
-    @alpha = alpha
+  def self.gray(gray, alpha)
+    g = GrayColour.new
+    g.gray = gray
+    g.alpha = alpha
+    g
   end
 
   def self.from_colour(col)
     gray = (0.3*col.red + 0.59*col.green + 0.11*col.blue).to_i
-    GrayColour.new(gray, col.alpha)
+    GrayColour.gray(gray, col.alpha)
   end
 end
