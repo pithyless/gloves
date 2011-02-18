@@ -8,9 +8,16 @@ RUI::Application.init('hello') do |app|
   widget.gui = RUI::autogui do
     layout :type => :horizontal do
       layout :type => :vertical do
-        scroll_area :name => :scrollable do
-          label :name => :pic_label, :image => final.image
+        graphics_view :name => :graph_view do
+          graphics_scene :name => :graph_scene do
+            graphics_pixmap_item(:name => :graph_px,
+                                 :image => final.image)
+          end
         end
+        # canvas_area :name => :canvas
+        # scroll_area :name => :scrollable do
+        #   label :name => :pic_label, :image => final.image
+        # end
         label :name => :footer_label, :text => 'Footer'
       end
       layout :type => :vertical do
