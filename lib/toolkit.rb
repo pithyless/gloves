@@ -51,7 +51,12 @@ end
 
 class Qt::GraphicsScene
   def add_widget(widget)
-    addItem(widget)
+    if widget.is_a?(Qt::GraphicsItem)
+      addItem(widget)
+    else
+      # TODO: Better test for Qt::GraphicsProxyWidget?
+      addWidget(widget)
+    end
   end
 end
 
