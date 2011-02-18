@@ -16,10 +16,6 @@ module RUI::GuiBuilder
 end
 
 class Qt::Image
-  def to_image
-    self
-  end
-
   def deep_copy
     copy(0, 0, width, height)
   end
