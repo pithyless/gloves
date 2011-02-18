@@ -83,11 +83,13 @@ module RUI::GuiBuilder
   end
 end
 
-class CanvasWidget < Qt::Widget
+class MonocleSelectorWidget < Qt::Widget
   def initialize(parent = nil)
     super
+    setPalette(Qt::Palette.new(Qt::Color.new(0, 0, 0, 0)))
+    setAutoFillBackground(true)
   end
-  
+
   def paintEvent(event)
     painter = Qt::Painter.new(self)
     painter.setBrush(Qt::Brush.new(Qt::blue))
@@ -96,10 +98,22 @@ class CanvasWidget < Qt::Widget
   end
 end
 
-module RUI::GuiBuilder
-  class CanvasArea < Widget
-    def factory(desc)
-      CanvasWidget
+module RUI
+  module GuiBuilder
+    class MonocleSelector
+      include GuiBuilder
+
+      def create_element(window, parent, desc)
+        #
+        # NOTE: Qt::GraphicsProxyWidget must be top-level;
+        #       do not pass in any parent:
+        # NO: label = Qt::Label.new('test', window)
+        # YES:label = Qt::Label.new('test')
+        #
+        sel = MonocleSelectorWidget.new
+        setup_widget(sel, window, parent, desc)
+        sel
+      end
     end
   end
 end

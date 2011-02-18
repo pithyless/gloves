@@ -3,6 +3,7 @@ require_relative 'lib/monocles'
 
 RUI::Application.init('hello') do |app|
   final = ScanMonocle.new('samples/01-a-100-2.png')
+  test =  ScanMonocle.new('samples/test.png')
 
   widget = Qt::Widget.new
   widget.gui = RUI::autogui do
@@ -12,12 +13,11 @@ RUI::Application.init('hello') do |app|
           graphics_scene :name => :graph_scene do
             graphics_pixmap_item(:name => :graph_px,
                                  :image => final.image)
+            graphics_pixmap_item(:name => :graph_px2,
+                                 :image => test.image)
+            monocle_selector :name => :mono_sel
           end
         end
-        # canvas_area :name => :canvas
-        # scroll_area :name => :scrollable do
-        #   label :name => :pic_label, :image => final.image
-        # end
         label :name => :footer_label, :text => 'Footer'
       end
       layout :type => :vertical do
