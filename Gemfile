@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gem 'qtbindings'
 
-gem "rui", :git => "https://github.com/pithyless/rui.git"
+gem "rui", :git => "https://github.com/pithyless/rui.git", :ref => 'eb67c2'
 gem 'chunky_png'
 gem 'oily_png'
 
