@@ -3,7 +3,7 @@ require 'rui'
 
 class Qt::ScrollArea
   def add_widget(widget)
-    setWidget(widget)
+    self.widget = widget
   end
 end
 
