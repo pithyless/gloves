@@ -15,8 +15,6 @@ RUI::Application.init('hello') do |app|
                                  :image => final.image)
             graphics_pixmap_item(:name => :graph_px2,
                                  :image => test.image)
-            # monocle_selector(:name => :mono_sel,
-            #                  :graphics_view = :graph_view)
           end
         end
         label :name => :footer_label, :text => 'Footer'
@@ -29,9 +27,8 @@ RUI::Application.init('hello') do |app|
     end
   end
 
-  mono = MonocleSelectorWidget.new(nil,
-                                   widget.graph_view)
-  widget.graph_scene.addWidget(mono)
+  widget.graph_scene.addWidget(
+    MonocleSelectorWidget.new(nil, widget.graph_view))
 
   widget.colorize.on(:clicked) do
     final = final.to_color_monocle

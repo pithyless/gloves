@@ -66,73 +66,87 @@ module RUI::GuiBuilder
 end
 
 class RubberBandSelect < Qt::RubberBand
+  def initialize(graphics_view)
+    super(Qt::RubberBand::Rectangle, graphics_view)
+    @initial_pos = Qt::Point.new(0,0)
+  end
+
   def paintEvent(event)
+    pen = Qt::Pen.new
+    pen.color = Qt::Color.new(50,50,50,130)
+    pen.style = Qt::DotLine
+    pen.width = 2
+
     painter = Qt::Painter.new(self)
-    painter.setBrush(Qt::Brush.new(Qt::blue))
+    painter.pen = pen
+
+    painter.brush = Qt::Brush.new(Qt::Color.new(50,50,50,100))
     painter.drawRect(event.rect)
     painter.end
+  end
+
+  def start_select(pos)
+    @initial_pos = pos
+    setGeometry(Qt::Rect.new(@initial_pos, Qt::Size.new(0,0)))
+    show
+  end
+
+  def update_select(pos)
+    setGeometry(Qt::Rect.new(@initial_pos, pos).normalized)
+  end
+
+  def finish_select(pos)
+    p Qt::Rect.new(@initial_pos, pos).normalized
   end
 end
 
 class MonocleSelectorWidget < Qt::Widget
   def initialize(parent = nil, graphics_view)
     super(parent)
-    # setPalette(Qt::Palette.new(Qt::Color.new(0, 0, 0, 0)))
-    # setAutoFillBackground(true)
+    setPalette(Qt::Palette.new(Qt::Color.new(0, 0, 0, 0)))
+    setAutoFillBackground(true)
     @graphics_view = graphics_view
   end
 
-  # TODO
-  # def paintEvent(event)
-  #   painter = Qt::Painter.new(self)
-  #   painter.setBrush(Qt::Brush.new(Qt::blue))
-  #   painter.drawRect(Qt::Rect.new(30, 30, 50, 50))
-  #   painter.end
-  # end
-
   def rubberBand
-    @rubberBand = @rubberBand ||
-      RubberBandSelect.new(Qt::RubberBand::Rectangle, @graphics_view)
+    @rubberBand ||= RubberBandSelect.new(@graphics_view)
   end
 
   def mousePressEvent(event)
-    @mouse_origin = event.globalPos
-    rubberBand.setGeometry(Qt::Rect.new(@mouse_origin,
-                                        Qt::Size.new(0,0)))
-    rubberBand.show
+    rubberBand.start_select(event.globalPos)
   end
 
   def mouseMoveEvent(event)
-    rubberBand.setGeometry(Qt::Rect.new(@mouse_origin,
-                                        event.globalPos).normalized)
+    rubberBand.update_select(event.globalPos)
   end
 
   def mouseReleaseEvent(event)
-    p Qt::Rect.new(@mouse_origin,event.globalPos).normalized
+    rubberBand.finish_select(event.globalPos)
   end
 end
 
-module RUI
-  module GuiBuilder
-    class MonocleSelector
-      include GuiBuilder
+# module RUI
+#   module GuiBuilder
+#     class MonocleSelector
+#       include GuiBuilder
 
-      def create_element(window, parent, desc)
-        #
-        # NOTE: Qt::GraphicsProxyWidget must be top-level;
-        #       do not pass in any parent:
-        # NO: label = Qt::Label.new('test', window)
-        # YES:label = Qt::Label.new('test')
-        #
+#       def create_element(window, parent, desc)
+#         #
+#         # NOTE: Qt::GraphicsProxyWidget must be top-level;
+#         #       do not pass in any parent:
+#         # NO: label = Qt::Label.new('test', window)
+#         # YES:label = Qt::Label.new('test')
+#         #
 
-        #(nil, desc.opts[:graphics_view])
-        sel = MonocleSelectorWidget.new
-        setup_widget(sel, window, parent, desc)
-        sel
-      end
-    end
-  end
-end
+#         #(nil, desc.opts[:graphics_view])
+#         raise parent.to_s
+#         sel = MonocleSelectorWidget.new
+#         setup_widget(sel, window, parent, desc)
+#         sel
+#       end
+#     end
+#   end
+# end
 
 
 # Qt::Color.class_eval do
