@@ -69,34 +69,43 @@ class RubberBandSelect < Qt::RubberBand
   def initialize(graphics_view)
     super(Qt::RubberBand::Rectangle, graphics_view)
     @initial_pos = Qt::Point.new(0,0)
-  end
+    @final_pos   = @initial_pos
 
-  def paintEvent(event)
     pen = Qt::Pen.new
     pen.color = Qt::Color.new(50,50,50,130)
     pen.style = Qt::DotLine
     pen.width = 2
+    @my_pen = pen
+  end
 
+  def paintEvent(event)
     painter = Qt::Painter.new(self)
-    painter.pen = pen
+    painter.pen = @my_pen
 
     painter.brush = Qt::Brush.new(Qt::Color.new(50,50,50,100))
     painter.drawRect(event.rect)
     painter.end
   end
 
+  def select_rect
+    Qt::Rect.new(@initial_pos, @final_pos).normalized
+  end
+
   def start_select(pos)
     @initial_pos = pos
-    setGeometry(Qt::Rect.new(@initial_pos, Qt::Size.new(0,0)))
+    @final_pos   = pos
+    setGeometry(select_rect)
     show
   end
 
   def update_select(pos)
-    setGeometry(Qt::Rect.new(@initial_pos, pos).normalized)
+    @final_pos = pos
+    setGeometry(select_rect)
   end
 
   def finish_select(pos)
-    p Qt::Rect.new(@initial_pos, pos).normalized
+    @final_pos = pos
+    setGeometry(select_rect)
   end
 end
 
@@ -108,20 +117,20 @@ class MonocleSelectorWidget < Qt::Widget
     @graphics_view = graphics_view
   end
 
-  def rubberBand
-    @rubberBand ||= RubberBandSelect.new(@graphics_view)
+  def rubber_band
+    @rubber_band ||= RubberBandSelect.new(@graphics_view)
   end
 
   def mousePressEvent(event)
-    rubberBand.start_select(event.globalPos)
+    rubber_band.start_select(event.globalPos)
   end
 
   def mouseMoveEvent(event)
-    rubberBand.update_select(event.globalPos)
+    rubber_band.update_select(event.globalPos)
   end
 
   def mouseReleaseEvent(event)
-    rubberBand.finish_select(event.globalPos)
+    rubber_band.finish_select(event.globalPos)
   end
 end
 
