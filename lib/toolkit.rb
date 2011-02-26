@@ -131,6 +131,17 @@ class MonocleSelectorWidget < Qt::Widget
 
   def mouseReleaseEvent(event)
     rubber_band.finish_select(event.globalPos)
+
+    # TODO: temporary
+    if not @once_only
+      @once_only = true
+      p @graphics_view.scene.items
+
+      tmp_pixmap = @graphics_view.scene.items[1].pixmap
+      tmp_pixmap = tmp_pixmap.copy(rubber_band.select_rect)
+      p 'Creating new pixmap scene!'
+      @graphics_view.scene.addPixmap(tmp_pixmap)
+    end
   end
 end
 
