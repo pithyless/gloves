@@ -1,7 +1,7 @@
 require_relative 'lib/toolkit'
 
 require_relative 'lib/lens_view'
-require_relative 'lib/monocles'
+require_relative 'lib/lenses'
 
 RUI::Application.init('hello') do |app|
   widget = Qt::Widget.new
