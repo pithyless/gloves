@@ -1,17 +1,18 @@
 require_relative 'chunkiness'
 
-class ScanMonocle
+class ScanLens
   include Chuckable
 
   attr_reader :image
 
-  def initialize(filename)
+  def initialize(attache, filename)
+    @attache = attache
     @filename = filename
     @image = Qt::Image.new(filename)
   end
 
-  def to_color_monocle
-    color = modify_each_pixel_chunky do |px|
+  def to_color_lens
+    new_img = modify_each_pixel_chunky do |px|
       c = Colour.from_chunky(px)
       m = 250
       if c.red > m and c.green > m and c.blue > m
@@ -19,35 +20,37 @@ class ScanMonocle
       end
       c.to_chunky
     end
-    ColorMonocle.new(color)
+    ColorLens.new(@attache, new_img)
   end
 end
 
-class ColorMonocle
+class ColorLens
   include Chuckable
 
   attr_reader :image
 
-  def initialize(image)
+  def initialize(attache, image)
+    @attache = attache
     @image = image
   end
 
-  def to_gray_monocle
-    gray = modify_each_pixel_chunky do |px|
+  def to_gray_lens
+    new_img = modify_each_pixel_chunky do |px|
       c = Colour.from_chunky(px)
       g = GrayColour.from_colour(c)
       g.to_chunky
     end
-    GrayMonocle.new(gray)
+    GrayLens.new(@attache, new_img)
   end
 end
 
-class GrayMonocle
+class GrayLens
   include Chuckable
 
   attr_reader :image
 
-  def initialize(image)
+  def initialize(attache, image)
+    @attache = attache
     @image = image
   end
 end
