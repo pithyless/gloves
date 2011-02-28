@@ -1,7 +1,7 @@
 require_relative 'chunkiness'
 
 class ScanLens
-  include Chuckable
+  include Chunkyable
 
   attr_reader :image
 
@@ -25,7 +25,7 @@ class ScanLens
 end
 
 class ColorLens
-  include Chuckable
+  include Chunkyable
 
   attr_reader :image
 
@@ -45,7 +45,7 @@ class ColorLens
 end
 
 class GrayLens
-  include Chuckable
+  include Chunkyable
 
   attr_reader :image
 

@@ -1,7 +1,7 @@
 require 'oily_png' # oily_png is faster chunky_png
 require_relative 'colour'
 
-module Chuckable
+module Chunkyable
   #
   # Takes a QImage, converts to ChunkyPNG,
   # applies block to ChunkyPNG, then returns new QImage
