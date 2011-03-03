@@ -7,8 +7,7 @@ class ScanLens
 
   attr_reader :image
 
-  def initialize(attache, filename)
-    @attache = attache
+  def initialize(filename)
     @filename = filename
     if File.exists? filename
       @image = Qt::Image.new(filename)
@@ -26,7 +25,7 @@ class ScanLens
       end
       c.to_chunky
     end
-    ColorLens.new(@attache, new_img)
+    ColorLens.new(new_img)
   end
 end
 
@@ -35,8 +34,7 @@ class ColorLens
 
   attr_reader :image
 
-  def initialize(attache, image)
-    @attache = attache
+  def initialize(image)
     @image = image
   end
 
@@ -46,7 +44,7 @@ class ColorLens
       g = GrayColour.from_colour(c)
       g.to_chunky
     end
-    GrayLens.new(@attache, new_img)
+    GrayLens.new(new_img)
   end
 end
 
@@ -55,8 +53,7 @@ class GrayLens
 
   attr_reader :image
 
-  def initialize(attache, image)
-    @attache = attache
+  def initialize(image)
     @image = image
   end
 end

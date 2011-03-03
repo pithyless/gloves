@@ -4,12 +4,12 @@ require_relative '../lib/lenses'
 class TestScanLens < MiniTest::Unit::TestCase
   def test_file_not_found
     assert_raises ImageFileNotFound do
-      d = ScanLens.new(nil, 'not_a_real_file.png')
+      d = ScanLens.new('not_a_real_file.png')
     end
   end
 
   def test_to_color_lens
-    d = ScanLens.new(nil, 'test/test_sample.png')
+    d = ScanLens.new('test/test_sample.png')
     c = d.to_color_lens
     assert_instance_of(ColorLens, c)
 
@@ -29,7 +29,7 @@ end
 
 class TestColorLens < MiniTest::Unit::TestCase
   def test_to_gray_lens
-    d = ScanLens.new(nil, 'test/test_sample.png')
+    d = ScanLens.new('test/test_sample.png')
     g = d.to_color_lens.to_gray_lens
     assert_instance_of(GrayLens, g)
 

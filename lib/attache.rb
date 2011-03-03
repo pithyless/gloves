@@ -9,7 +9,12 @@ class Attache
     @doc_author = "Unknown"
     @doc_dpi    = 100
     @lenses = []
-    add_lens(ScanLens.new(self, filename))
+    add_lens(ScanLens.new(filename))
+  end
+
+  def notify_of_changes
+    changed # notify observers
+    notify_observers(Time.now)
   end
 
   def add_lens(lens)
@@ -17,9 +22,8 @@ class Attache
     notify_of_changes
   end
 
-  def notify_of_changes
-    changed # notify observers
-    notify_observers(Time.now)
+  def lenses_count
+    @lenses.size
   end
 
   def current_lens
