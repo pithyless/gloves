@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 
+gem 'rake'
 gem 'qtbindings'
 
 gem "rui", :git => "https://github.com/pithyless/rui.git", :ref => 'eb67c2'
