@@ -1,5 +1,7 @@
 require_relative 'chunkiness'
 
+class ImageFileNotFound < StandardError; end
+
 class ScanLens
   include Chunkyable
 
@@ -8,7 +10,11 @@ class ScanLens
   def initialize(attache, filename)
     @attache = attache
     @filename = filename
-    @image = Qt::Image.new(filename)
+    if File.exists? filename
+      @image = Qt::Image.new(filename)
+    else
+      raise ImageFileNotFound.new("#{filename}")
+    end
   end
 
   def to_color_lens
