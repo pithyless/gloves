@@ -52,6 +52,10 @@ class Colour
     red == other.red and green == other.green and
       blue == other.blue and alpha == other.alpha
   end
+
+  def gray?
+    not invisible? and red == green and red == blue
+  end
 end
 
 class GrayColour

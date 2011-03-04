@@ -50,6 +50,15 @@ class TestColour < MiniTest::Unit::TestCase
     b = Colour.rgba(24,51,92,255)
     assert a != b, 'Colours should not be equal'
   end
+
+  def test_gray?
+    a = Colour.rgba(24,52,92,255)
+    b = Colour.rgba(24,24,24,255)
+    c = Colour.rgba(0,0,0,0)
+    assert (not a.gray?), 'Should not be gray'
+    assert b.gray?
+    assert (not c.gray?), 'Invisible is not gray'
+  end
 end
 
 class TestGrayColour < MiniTest::Unit::TestCase
