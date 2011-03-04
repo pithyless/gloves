@@ -88,6 +88,8 @@ class GrayLens < BaseLens
               queue.push([xx,yy])
             end
           end
+        elsif c.gray?
+          img[x,y] = c_outer_line_border.to_chunky
         end
       end
 
@@ -97,9 +99,22 @@ class GrayLens < BaseLens
           c = Colour.from_chunky(img[x,y])
           if c.invisible?
             img[x,y] = c_inner_region.to_chunky
+            [[x-1,y-1], [x,y-1], [x+1,y-1],
+             [x-1,y],            [x+1,y],
+             [x-1,y+1], [x,y+1], [x+1,y+1]].each do |xx,yy|
+              if xx < img.width and xx >= 0 and
+                  yy < img.height and yy >= 0
+                o = Colour.from_chunky(img[xx,yy])
+                if o.gray?
+                  img[xx,yy] = c_inner_line_border.to_chunky
+                end
+              end
+            end
           end
         end
       end
+
+
     end
     OutlineLens.new(new_img)
   end

@@ -21,10 +21,13 @@ RUI::Application.init('hello') do |app|
     end
   end
 
-  attache = Attache.new('samples/01-a-100-2.png')
+  # attache = Attache.new('samples/01-a-100-2.png')
   # attache = Attache.new('test/test_sample.png')
+  attache = Attache.new('test/test_sample2.png')
+
   lv = LensView.new(attache)
   widget.graph_view.setScene(lv.scene)
+  # widget.graph_view.scale(3.0,3.0)
 
   widget.crop_btn.on(:clicked) do
     # todo: selection
