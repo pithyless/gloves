@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem 'rake'
 gem 'qtbindings'
+gem 'minitest'
 
 gem "rui", :git => "https://github.com/pithyless/rui.git", :ref => 'eb67c2'
 gem 'chunky_png'
