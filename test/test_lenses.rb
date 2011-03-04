@@ -28,6 +28,12 @@ class TestScanLens < MiniTest::Unit::TestCase
 end
 
 class TestColorLens < MiniTest::Unit::TestCase
+  def test_not_initialized_with_image
+    assert_raises RuntimeError do
+      d = ColorLens.new(nil)
+    end
+  end
+
   def test_to_gray_lens
     d = ScanLens.new('test/test_sample.png')
     g = d.to_color_lens.to_gray_lens
@@ -44,5 +50,23 @@ class TestColorLens < MiniTest::Unit::TestCase
     end
     assert_equal 810,  gray_count
     assert_equal 9862, invisible_count
+  end
+end
+
+
+class TestGrayLens < MiniTest::Unit::TestCase
+  def test_not_initialized_with_image
+    assert_raises RuntimeError do
+      d = GrayLens.new(nil)
+    end
+  end
+end
+
+
+class TestOutlineLens < MiniTest::Unit::TestCase
+  def test_not_initialized_with_image
+    assert_raises RuntimeError do
+      d = OutlineLens.new(nil)
+    end
   end
 end

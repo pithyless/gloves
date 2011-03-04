@@ -15,12 +15,14 @@ RUI::Application.init('hello') do |app|
         button :name => :crop_btn, :text => 'Crop'
         button :name => :colorize, :text => 'Colorize'
         button :name => :grayify, :text => 'Grayify'
+        button :name => :outlinify, :text => 'Outline'
         button :name => :quit, :text => 'Quit'
       end
     end
   end
 
   attache = Attache.new('samples/01-a-100-2.png')
+  # attache = Attache.new('test/test_sample.png')
   lv = LensView.new(attache)
   widget.graph_view.setScene(lv.scene)
 
@@ -42,6 +44,12 @@ RUI::Application.init('hello') do |app|
   end
   widget.grayify.on(:clicked) do
     c = attache.current_lens.to_gray_lens
+    attache.add_lens(c)
+
+    widget.grayify.enabled = false    # todo - should be automagic
+  end
+  widget.outlinify.on(:clicked) do
+    c = attache.current_lens.to_outline_lens
     attache.add_lens(c)
 
     widget.grayify.enabled = false    # todo - should be automagic
