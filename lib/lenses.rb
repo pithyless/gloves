@@ -58,11 +58,11 @@ class GrayLens < BaseLens
     Colour.rgba(255, 0, 0, 255)
   end
 
-  def c_inner_line
+  def c_inner_line_border
     Colour.rgba(0, 0, 255, 255)
   end
 
-  def c_inner_line_border
+  def c_inner_stroke
     Colour.rgba(0, 255, 0, 255)
   end
 
@@ -114,6 +114,15 @@ class GrayLens < BaseLens
         end
       end
 
+      # color inner strokes
+      for y in 0...img.height do
+        for x in 0...img.width do
+          c = Colour.from_chunky(img[x,y])
+          if c.gray?
+            img[x,y] = c_inner_stroke.to_chunky
+          end
+        end
+      end
 
     end
     OutlineLens.new(new_img)
