@@ -35,7 +35,7 @@ class Colour
   def green=(x); @green = clasp(x); end
   def blue=(x);  @blue = clasp(x);  end
   def alpha=(x); @alpha = clasp(x); end
-  
+
   def to_s
     "<Colour: #{red}, #{blue}, #{green}, #{alpha}>"
   end
@@ -47,6 +47,11 @@ class Colour
   def invisible?
     red == 0 and green == 0 and blue == 0 and alpha == 0
   end
+
+  def ==(other)
+    red == other.red and green == other.green and
+      blue == other.blue and alpha == other.alpha
+  end
 end
 
 class GrayColour
@@ -56,7 +61,7 @@ class GrayColour
 
   def gray=(x);  @gray = clasp(x);  end
   def alpha=(x); @alpha = clasp(x); end
-  
+
   def self.gray(gray, alpha)
     g = GrayColour.new
     g.gray = gray
@@ -79,5 +84,9 @@ class GrayColour
 
   def invisible?
     gray == 0 and alpha == 0
+  end
+
+  def ==(other)
+    gray == other.gray and alpha == other.alpha
   end
 end

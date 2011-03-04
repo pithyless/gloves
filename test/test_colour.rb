@@ -38,6 +38,18 @@ class TestColour < MiniTest::Unit::TestCase
 
     assert_equal true, c.invisible?
   end
+
+  def test_colour_equal
+    a = Colour.rgba(24,52,92,255)
+    b = Colour.rgba(24,52,92,255)
+    assert_equal a, b
+  end
+
+  def test_colour_not_equal
+    a = Colour.rgba(24,52,92,255)
+    b = Colour.rgba(24,51,92,255)
+    assert a != b, 'Colours should not be equal'
+  end
 end
 
 class TestGrayColour < MiniTest::Unit::TestCase
@@ -83,6 +95,18 @@ class TestGrayColour < MiniTest::Unit::TestCase
     assert_equal c.alpha, 0
 
     assert_equal true, c.invisible?
+  end
+
+  def test_gray_colour_equal
+    a = GrayColour.gray(24,255)
+    b = GrayColour.gray(24,255)
+    assert_equal a, b
+  end
+
+  def test_gray_colour_not_equal
+    a = GrayColour.gray(24,255)
+    b = GrayColour.gray(21,255)
+    assert a != b, 'Colours should not be equal'
   end
 end
 
