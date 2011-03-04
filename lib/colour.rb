@@ -12,6 +12,8 @@ end
 
 class ColourMismatch < StandardError; end
 
+
+
 #
 # An abstract Colour RGBA class
 #
