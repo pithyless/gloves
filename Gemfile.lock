@@ -1,0 +1,44 @@
+GIT
+  remote: https://github.com/pithyless/rui.git
+  revision: eb67c2c4ffc4783ad04d78f6f71c62bd9e1db45b
+  ref: eb67c2
+  specs:
+    rui (0.1.0)
+      builder
+
+GIT
+  remote: https://github.com/wvanbergen/chunky_png.git
+  revision: e81ae9d74415b85d8c1f6e408a2931666289e8e4
+  ref: e81ae9
+  specs:
+    chunky_png (1.0.0.rc2)
+
+GIT
+  remote: https://github.com/wvanbergen/oily_png.git
+  revision: 891e92333ca44de236116e145e4ddfb671134667
+  ref: 891e92
+  specs:
+    oily_png (1.0.0.rc2)
+      chunky_png (~> 1.0.0.beta1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    builder (3.0.0)
+    minitest (2.0.2)
+    qtbindings (4.6.3.2)
+    rake (0.8.7)
+    rcov (0.9.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler
+  chunky_png!
+  minitest
+  oily_png!
+  qtbindings
+  rake
+  rcov
+  rui!
