@@ -49,24 +49,6 @@ class ColorLens < BaseLens
   end
 end
 
-module Kolor
-  extend ChunkyPNG::Color
-
-  def self.invisible
-    rgba(0, 0, 0, 0)
-  end
-
-  def self.invisible?(value)
-    r(value) == 0 and g(value) == 0 and b(value) == 0 and
-      a(value) == 0
-  end
-
-  def self.gray?(value)
-    r(value) == g(value) and r(value) == b(value) and
-      not invisible?(value)
-  end
-end
-
 class GrayLens < BaseLens
 
   def to_outline_lens
