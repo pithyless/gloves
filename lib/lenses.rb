@@ -89,11 +89,10 @@ class GrayLens < BaseLens
             [[x-1,y-1], [x,y-1], [x+1,y-1],
              [x-1,y],            [x+1,y],
              [x-1,y+1], [x,y+1], [x+1,y+1]].each do |xx,yy|
-              if xx < img.width and xx >= 0 and
-                  yy < img.height and yy >= 0
-                if Kolor.gray?(img[xx,yy])
-                  img[xx,yy] = c_inner_line_border_chunky
-                end
+              next if xx >= img.width or xx < 0
+              next if yy >=img.height or yy < 0
+              if Kolor.gray?(img[xx,yy])
+                img[xx,yy] = c_inner_line_border_chunky
               end
             end
             img.replace_row!(y, row)
