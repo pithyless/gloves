@@ -1,4 +1,5 @@
 require_relative 'chunkiness'
+require_relative 'kolor'
 
 class ImageFileNotFound < StandardError; end
 
@@ -27,12 +28,12 @@ class ScanLens < BaseLens
 
   def to_color_lens
     new_img = modify_each_pixel_chunky do |px|
-      c = Colour.from_chunky(px)
-      m = 250
-      if c.red > m and c.green > m and c.blue > m
-        c = Colour.invisible
+      m = 250 # max threshold
+      if Kolor.red(px) > m and Kolor.green(px) > m and
+          Kolor.blue(px) > m
+        px = Kolor.invisible
       end
-      c.to_chunky
+      px
     end
     ColorLens.new(new_img)
   end
@@ -41,9 +42,7 @@ end
 class ColorLens < BaseLens
   def to_gray_lens
     new_img = modify_each_pixel_chunky do |px|
-      c = Colour.from_chunky(px)
-      g = GrayColour.from_colour(c)
-      g.to_chunky
+      Kolor.to_grayscale(px)
     end
     GrayLens.new(new_img)
   end

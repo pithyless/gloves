@@ -1,5 +1,4 @@
 require 'oily_png' # oily_png is faster chunky_png
-require_relative 'colour'
 
 module Chunkyable
   #
@@ -63,30 +62,5 @@ module Chunkyable
         end
       end
     end
-  end
-end
-
-Colour.class_eval do
-  def self.from_chunky(col)
-    (r,g,b,a) = ChunkyPNG::Color.to_truecolor_alpha_bytes(col)
-    Colour.rgba(r, g, b, a)
-  end
-
-  def to_chunky
-    ChunkyPNG::Color.rgba(red, green, blue, alpha)
-  end
-end
-
-GrayColour.class_eval do
-  def self.from_chunky(col)
-    (r,g,b,a) = ChunkyPNG::Color.to_truecolor_alpha_bytes(col)
-    unless (r == g and r == b)
-      raise ColourMismatch.new("Does not look like gray pixel!")
-    end
-    GrayColour.gray(r, a)
-  end
-
-  def to_chunky
-    ChunkyPNG::Color.rgba(gray, gray, gray, alpha)
   end
 end

@@ -15,8 +15,7 @@ class TestScanLens < MiniTest::Unit::TestCase
 
     color_count, invisible_count = 0, 0
     c.each_pixel_chunky do |px|
-      px = Colour.from_chunky(px)
-      if px.invisible?
+      if Kolor.invisible?(px)
         invisible_count += 1
       else
         color_count += 1
@@ -41,11 +40,12 @@ class TestColorLens < MiniTest::Unit::TestCase
 
     gray_count, invisible_count = 0, 0
     g.each_pixel_chunky do |px|
-      px = GrayColour.from_chunky(px)
-      if px.invisible?
+      if Kolor.invisible?(px)
         invisible_count += 1
-      else
+      elsif Kolor.gray?(px)
         gray_count += 1
+      else
+        raise 'Should always be gray or invisible'
       end
     end
     assert_equal 810,  gray_count

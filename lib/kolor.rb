@@ -1,3 +1,5 @@
+require 'oily_png'
+
 class KolorMismatch < StandardError; end
 
 module Kolor
