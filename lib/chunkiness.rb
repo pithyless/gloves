@@ -63,4 +63,16 @@ module Chunkyable
       end
     end
   end
+
+  def each_surrounding_coordinate(x,y)
+    maxheight = @image.height
+    maxwidth  = @image.width
+    [[x-1,y-1], [x,y-1], [x+1,y-1],
+     [x-1,y],            [x+1,y],
+     [x-1,y+1], [x,y+1], [x+1,y+1]].each do |xx,yy|
+      next if yy < 0 or yy >= maxheight
+      next if xx < 0 or xx >= maxwidth
+      yield [xx,yy]
+    end
+  end
 end
