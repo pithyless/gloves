@@ -102,12 +102,12 @@ class GrayLens < BaseLens
       end
 
       # color inner strokes
-      for y in 0...img.height do
-        for x in 0...img.width do
-          if Kolor.gray?(img[x,y])
-            img[x,y] = c_inner_stroke_chunky
-          end
+      (0...img.height).each do |y|
+        row = img.row(y)
+        row = row.map do |px|
+          Kolor.gray?(px) ? c_inner_stroke_chunky : px
         end
+        img.replace_row!(y, row)
       end
 
     end
