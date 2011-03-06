@@ -18,12 +18,11 @@ end
 
 class ScanLens < BaseLens
   def initialize(filename)
-    @filename = filename
-    if File.exists? filename
-      @image = Qt::Image.new(filename)
-    else
-      raise ImageFileNotFound.new("#{filename}")
+    unless File.exists? filename
+      raise ImageFileNotFound.new "#{filename}"
     end
+    @filename = filename
+    super(Qt::Image.new(filename))
   end
 
   def to_color_lens
