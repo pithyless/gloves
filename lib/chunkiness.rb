@@ -1,78 +1,63 @@
 require 'oily_png' # oily_png is faster chunky_png
+require_relative 'toolkit'
 
-module Chunkyable
+class Qt::Image
   #
-  # Takes a QImage, converts to ChunkyPNG,
+  # Converts Qt::Image to ChunkyPNG,
   # applies block to ChunkyPNG, then returns new QImage
   #
-  def using_chunky
-    ba = Qt::ByteArray.new
-    iob = Qt::Buffer.new(ba)
-    iob.open(Qt::IODevice::ReadWrite)
-    @image.save(iob, "PNG")
-
-    iob.reset
-    img = ChunkyPNG::Image.from_blob(iob.readAll.data)
-    iob.close
-
-    yield img
+  def new_image_using_chunky(&blk)
+    img = to_chunky_image
+    blk.call(img)
     len = img.width * img.height
     Qt::Image.fromData(img.to_datastream.to_blob, len)
   end
 
   #
-  # Takes a QImage, converts to ChunkyPNG,
-  # then applies block to ChunkyPNG
+  # Converts Qt::Image to ChunkyPNG
   #
-  def map_chunky
-    ba = Qt::ByteArray.new
-    iob = Qt::Buffer.new(ba)
+  def to_chunky_image
+    iob = Qt::Buffer.new(Qt::ByteArray.new)
     iob.open(Qt::IODevice::ReadWrite)
-    @image.save(iob, "PNG")
-
+    save(iob, "PNG")
     iob.reset
     img = ChunkyPNG::Image.from_blob(iob.readAll.data)
     iob.close
-
-    yield img
+    iob = nil
+    img
   end
+end
 
+class ChunkyPNG::Image
   #
-  # Iterates over ChunkyPNG
+  # Iterates over ChunkyPNG and yields each pixel to block
   #
-  def each_pixel_chunky
-    map_chunky do |img|
-      for y in 0...img.height do
-        for x in 0...img.width do
-          yield(img[x,y])
-        end
+  def map_pixels(&blk)
+    for y in 0...height do
+      for x in 0...width do
+        blk.call(self[x,y])
       end
     end
   end
 
   #
-  # Iterates over ChunkyPNG and applies function to each pixel;
-  # where function expects Colour and returns Colour
+  # Iterates over ChunkyPNG and yields each pixel to block;
+  # Block must return new pixel.
   #
-  def modify_each_pixel_chunky
-    using_chunky do |img|
-      for y in 0...img.height do
-        for x in 0...img.width do
-          img[x,y] = yield(img[x,y])
-        end
+  def map_pixels!(&blk)
+    for y in 0...height do
+      for x in 0...width do
+        self[x,y] = blk.call(self[x,y])
       end
     end
   end
 
   def each_surrounding_coordinate(x,y)
-    maxheight = @image.height
-    maxwidth  = @image.width
     [[x-1,y-1], [x,y-1], [x+1,y-1],
      [x-1,y],            [x+1,y],
-     [x-1,y+1], [x,y+1], [x+1,y+1]].each do |xx,yy|
-      next if yy < 0 or yy >= maxheight
-      next if xx < 0 or xx >= maxwidth
-      yield [xx,yy]
+     [x-1,y+1], [x,y+1], [x+1,y+1]].each do |xx, yy|
+      next unless include_xy?(xx, yy)
+      yield [xx, yy]
     end
   end
 end

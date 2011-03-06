@@ -4,8 +4,6 @@ require_relative 'kolor'
 class ImageFileNotFound < StandardError; end
 
 class BaseLens
-  include Chunkyable
-
   attr_reader :image
 
   def initialize(image)
@@ -26,13 +24,15 @@ class ScanLens < BaseLens
   end
 
   def to_color_lens
-    new_img = modify_each_pixel_chunky do |px|
-      m = 250 # max threshold
-      if Kolor.red(px) > m and Kolor.green(px) > m and
-          Kolor.blue(px) > m
-        px = Kolor.invisible
+    m = 250 # max threshold
+    new_img = @image.new_image_using_chunky do |chunky_img|
+      chunky_img.map_pixels! do |px|
+        if Kolor.red(px) > m and Kolor.green(px) > m and
+            Kolor.blue(px) > m
+          px = Kolor.invisible
+        end
+        px
       end
-      px
     end
     ColorLens.new(new_img)
   end
@@ -40,8 +40,10 @@ end
 
 class ColorLens < BaseLens
   def to_gray_lens
-    new_img = modify_each_pixel_chunky do |px|
-      Kolor.to_grayscale(px)
+    new_img = @image.new_image_using_chunky do |chunky_img|
+      chunky_img.map_pixels! do |px|
+        Kolor.to_grayscale(px)
+      end
     end
     GrayLens.new(new_img)
   end
@@ -50,15 +52,15 @@ end
 class GrayLens < BaseLens
 
   def to_outline_lens
-    c_background_chunky = Kolor.rgba(0, 255, 255, 255)
-    c_outer_line_border_chunky = Kolor.rgba(255, 0, 0, 255)
-    c_inner_region_chunky = Kolor.rgba(255, 255, 0, 255)
-    c_inner_line_border_chunky = Kolor.rgba(0, 0, 255, 255)
-    c_inner_stroke_chunky = Kolor.rgba(0, 255, 0, 255)
+    c_background_chunky = OutlineLens::C_BACKGROUND
+    c_outer_line_border_chunky = OutlineLens::C_OUTER_LINE_BORDER
+    c_inner_line_border_chunky = OutlineLens::C_INNER_LINE_BORDER
+    c_inner_region_chunky = OutlineLens::C_INNER_REGION
+    c_inner_stroke_chunky = OutlineLens::C_INNER_STROKE
 
     c_invisible_chunky = Kolor.invisible
 
-    new_img = using_chunky do |img|
+    new_img = @image.new_image_using_chunky do |img|
 
       # fill in background
       queue = [[0,0]]    # todo: assumes [0,0] is background pixel
@@ -66,7 +68,7 @@ class GrayLens < BaseLens
         x,y = queue.pop
         if img[x,y] == c_invisible_chunky
           img[x,y] = c_background_chunky
-          each_surrounding_coordinate(x,y) do |xx, yy|
+          img.each_surrounding_coordinate(x,y) do |xx, yy|
             queue.push([xx,yy])
           end
         elsif Kolor.gray?(img[x,y])
@@ -80,7 +82,7 @@ class GrayLens < BaseLens
         row.each_with_index do |value, x|
           if Kolor.invisible?(value)
             row[x] = c_inner_region_chunky
-            each_surrounding_coordinate(x,y) do |xx, yy|
+            img.each_surrounding_coordinate(x,y) do |xx, yy|
               if Kolor.gray?(img[xx,yy])
                 img[xx,yy] = c_inner_line_border_chunky
               end
@@ -105,4 +107,9 @@ class GrayLens < BaseLens
 end
 
 class OutlineLens < BaseLens
+  C_BACKGROUND = Kolor.rgba(0, 255, 255, 255)
+  C_OUTER_LINE_BORDER = Kolor.rgba(255, 0, 0, 255)
+  C_INNER_LINE_BORDER = Kolor.rgba(0, 0, 255, 255)
+  C_INNER_REGION = Kolor.rgba(255, 255, 0, 255)
+  C_INNER_STROKE = Kolor.rgba(0, 255, 0, 255)
 end
