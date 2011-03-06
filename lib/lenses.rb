@@ -78,27 +78,20 @@ class GrayLens < BaseLens
 
       # fill in inner regions
       for y in 0...img.height do
-        row = img.row(y)
-        row.each_with_index do |value, x|
-          if Kolor.invisible?(value)
-            row[x] = c_inner_region_chunky
-            img.each_surrounding_coordinate(x,y) do |xx, yy|
-              if Kolor.gray?(img[xx,yy])
-                img[xx,yy] = c_inner_line_border_chunky
-              end
+        for x in 0...img.width do
+          next unless c_invisible_chunky == img[x,y]
+          img[x,y] = c_inner_region_chunky
+          img.each_surrounding_coordinate(x,y) do |xx, yy|
+            if Kolor.gray?(img[xx,yy])
+              img[xx,yy] = c_inner_line_border_chunky
             end
-            img.replace_row!(y, row)
           end
         end
       end
 
       # color inner strokes
-      (0...img.height).each do |y|
-        row = img.row(y)
-        row = row.map do |px|
-          Kolor.gray?(px) ? c_inner_stroke_chunky : px
-        end
-        img.replace_row!(y, row)
+      img.map_pixels! do |px|
+        Kolor.gray?(px) ? c_inner_stroke_chunky : px
       end
 
     end
