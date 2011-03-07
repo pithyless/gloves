@@ -11,6 +11,9 @@ gem 'rui', :git => "https://github.com/pithyless/rui.git", :ref => 'eb67c2'
 gem 'chunky_png', '0.12.0'
 gem 'oily_png',   '0.3.0'
 
+# gem 'chunky_png'
+# gem 'oily_png'
+
 group :development do
   gem "bundler"
   gem "rcov"

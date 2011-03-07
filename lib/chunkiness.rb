@@ -35,7 +35,7 @@ class ChunkyPNG::Image
   def map_pixels(&blk)
     for y in 0...height do
       for x in 0...width do
-        blk.call(self[x,y])
+        blk.call(get_pixel(x,y))
       end
     end
   end
@@ -47,7 +47,7 @@ class ChunkyPNG::Image
   def map_pixels!(&blk)
     for y in 0...height do
       for x in 0...width do
-        self[x,y] = blk.call(self[x,y])
+        set_pixel(x, y, blk.call(get_pixel(x,y)))
       end
     end
   end

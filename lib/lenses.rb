@@ -66,24 +66,24 @@ class GrayLens < BaseLens
       queue = [[0,0]]    # todo: assumes [0,0] is background pixel
       until queue.empty?
         x,y = queue.pop
-        if img[x,y] == c_invisible_chunky
-          img[x,y] = c_background_chunky
+        if img.get_pixel(x,y) == c_invisible_chunky
+          img.set_pixel(x, y, c_background_chunky)
           img.each_surrounding_coordinate(x,y) do |xx, yy|
             queue.push([xx,yy])
           end
-        elsif Kolor.gray?(img[x,y])
-          img[x,y] = c_outer_line_border_chunky
+        elsif Kolor.gray?(img.get_pixel(x, y))
+          img.set_pixel(x, y, c_outer_line_border_chunky)
         end
       end
 
       # fill in inner regions
       for y in 0...img.height do
         for x in 0...img.width do
-          next unless c_invisible_chunky == img[x,y]
-          img[x,y] = c_inner_region_chunky
+          next unless c_invisible_chunky == img.get_pixel(x,y)
+          img.set_pixel(x, y, c_inner_region_chunky)
           img.each_surrounding_coordinate(x,y) do |xx, yy|
-            if Kolor.gray?(img[xx,yy])
-              img[xx,yy] = c_inner_line_border_chunky
+            if Kolor.gray?(img.get_pixel(xx, yy))
+              img.set_pixel(xx, yy, c_inner_line_border_chunky)
             end
           end
         end
